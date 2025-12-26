@@ -1,0 +1,239 @@
+---
+import type { Project } from "../lib/github"
+
+interface Props {
+  project: Project
+}
+
+const { project } = Astro.props
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date)
+}
+---
+
+<article class="project" id={`project-${project.id}`}>
+  <div class="project-content">
+    <div class="project-info">
+      <h3>
+        {project.title}
+        {project.archived && <span class="archived-badge">Archived</span>}
+      </h3>
+
+      <p class="description">{project.description}</p>
+
+      <div class="metadata">
+        {
+          project.languages.length > 0 && (
+            <div class="languages">
+              <strong>Language(s):</strong>
+              {project.languages.map((lang, i) => (
+                <span class="language">
+                  {lang}
+                  {i < project.languages.length - 1 ? ", " : ""}
+                </span>
+              ))}
+            </div>
+          )
+        }
+
+        {
+          project.topics.length > 0 && (
+            <div class="topics">
+              {project.topics.map((topic) => (
+                <span class="topic">{topic}</span>
+              ))}
+            </div>
+          )
+        }
+
+        <div class="dates">
+          <span><strong>Created:</strong> {formatDate(project.createdAt)}</span>
+          <span><strong>Updated:</strong> {formatDate(project.updatedAt)}</span>
+        </div>
+      </div>
+
+      <div class="links">
+        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+          <i class="fa fa-github"></i> Repository
+        </a>
+        {
+          project.demoUrl && (
+            <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+              <i class="fa fa-external-link" /> Demo
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      project.imageUrl && (
+        <div class="project-image">
+          <img
+            src={project.imageUrl}
+            alt={`${project.title} preview`}
+            loading="lazy"
+          />
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .project {
+    border: 2px solid rgba(100, 100, 100, 0.3);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    background: rgba(250, 250, 250, 0.85);
+    backdrop-filter: blur(15px);
+    scroll-margin-top: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .project:target {
+    border-color: rgba(0, 102, 204, 0.8);
+    box-shadow: 0 0 15px rgba(0, 102, 204, 0.4);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .project:hover {
+    border-color: rgba(0, 102, 204, 0.5);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .project-content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .project-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .archived-badge {
+    display: inline-block;
+    margin-left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 193, 7, 0.8);
+    color: #000;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  .project-image {
+    flex-shrink: 0;
+    width: 400px;
+    max-width: 45%;
+  }
+
+  .project-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    max-height: 300px;
+  }
+
+  @media (max-width: 768px) {
+    .project-content {
+      flex-direction: column;
+    }
+
+    .project-image {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .project-image img {
+      max-height: 300px;
+    }
+  }
+
+  .project h3 {
+    color: #222;
+    margin-bottom: 0.75rem;
+  }
+
+  .description {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .metadata {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .metadata > div {
+    margin-bottom: 0.5rem;
+  }
+
+  .languages {
+    color: #555;
+  }
+
+  .language {
+    display: inline;
+  }
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .topic {
+    background: #e0e0e0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+
+  .dates {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    color: #666;
+  }
+
+  .links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    background: #0066cc;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .links a:hover {
+    background: #0052a3;
+    text-decoration: none;
+  }
+
+  .links a i {
+    font-size: 1rem;
+  }
+</style>

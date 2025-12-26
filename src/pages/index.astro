@@ -1,0 +1,444 @@
+---
+import Layout from "../layouts/Layout.astro"
+import ProjectCard from "../components/ProjectCard.astro"
+import { fetchGitHubProjects } from "../lib/github"
+
+const githubToken = import.meta.env.GITHUB_TOKEN
+let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
+---
+
+<Layout title="Mathieu Caroff - GitHub Projects">
+  <main>
+    <header>
+      <div class="logo">
+        <a href="/"><img src="/redarrow420.png" /></a>
+      </div>
+
+      <div class="header-content">
+        <h1>mathieucaroff.com</h1>
+
+        <div class="socials">
+          <h4>Socials</h4>
+          <p class="brandiconheader">
+            <a href="https://github.com/mathieucaroff" title="github"
+              ><i class="fa fa-github"></i></a
+            >
+            <a href="https://gitlab.com/caroff" title="gitlab"
+              ><i class="fa fa-gitlab"></i></a
+            >
+            <a href="https://www.reddit.com/u/mathieucaroff/" title="reddit"
+              ><i class="fa fa-reddit"></i></a
+            >
+            <a
+              href="https://www.linkedin.com/in/mathieu-caroff/"
+              title="linkedin"><i class="fa fa-linkedin"></i></a
+            >
+            <a href="https://stackoverflow.com/u/9878263" title="stackoverflow"
+              ><i class="fa fa-stack-overflow"></i></a
+            >
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <h2>My GitHub Projects</h2>
+    <section class="controls">
+      <div class="search-filter">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search projects by title, description, topics, or languages..."
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="sort-controls">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect">
+          <option value="updated-desc">Last Updated (Newest)</option>
+          <option value="updated-asc">Last Updated (Oldest)</option>
+          <option value="created-desc">Created (Newest)</option>
+          <option value="created-asc">Created (Oldest)</option>
+        </select>
+      </div>
+
+      <div class="archive-filter">
+        <label for="archiveSelect">Archived:</label>
+        <select id="archiveSelect">
+          <option value="hide">Hide archived</option>
+          <option value="show">Show all</option>
+          <option value="only">Only archived</option>
+        </select>
+      </div>
+
+      <div class="demo-filter">
+        <label>
+          <input type="checkbox" id="demoOnlyCheckbox" />
+          Only projects with demo
+        </label>
+      </div>
+
+      <div class="stats">
+        <span id="projectCount">{projects.length}</span> projects
+      </div>
+    </section>
+
+    <div id="projectsContainer">
+      {
+        projects.length === 0 ? (
+          <p style="padding: 2rem; text-align: center; color: #666;">
+            No projects found. Check the console for errors.
+          </p>
+        ) : (
+          projects.map((project) => <ProjectCard project={project} />)
+        )
+      }
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import type { Project } from "../lib/github"
+
+  // Get all projects data from the DOM
+  const projectsData: Project[] = []
+  const projectElements = document.querySelectorAll(".project")
+
+  projectElements.forEach((el) => {
+    const article = el as HTMLElement
+    const id = parseInt(article.id.replace("project-", ""))
+    const title = article.querySelector("h3")?.textContent || ""
+    const isArchived = title.includes("Archived")
+    const cleanTitle = title.replace("Archived", "").trim()
+    const description = article.querySelector(".description")?.textContent || ""
+    const repoUrl =
+      (article.querySelector('a[href*="github.com"]') as HTMLAnchorElement)
+        ?.href || ""
+    const demoLink = article.querySelector(
+      'a[href]:not([href*="github.com"])'
+    ) as HTMLAnchorElement
+    const demoUrl = demoLink?.href || null
+
+    const languagesDiv = article.querySelector(".languages")
+    const languages = languagesDiv
+      ? Array.from(languagesDiv.querySelectorAll(".language")).map(
+          (el) => el.textContent?.trim().replace(",", "") || ""
+        )
+      : []
+
+    const topicsDiv = article.querySelector(".topics")
+    const topics = topicsDiv
+      ? Array.from(topicsDiv.querySelectorAll(".topic")).map(
+          (el) => el.textContent?.trim() || ""
+        )
+      : []
+
+    const dates = article.querySelectorAll(".dates span")
+    const createdText =
+      dates[0]?.textContent?.replace("Created:", "").trim() || ""
+    const updatedText =
+      dates[1]?.textContent?.replace("Updated:", "").trim() || ""
+
+    projectsData.push({
+      id,
+      title: cleanTitle,
+      description,
+      repoUrl,
+      demoUrl,
+      createdAt: new Date(createdText),
+      updatedAt: new Date(updatedText),
+      topics,
+      languages,
+      imageUrl: null,
+      archived: isArchived,
+    })
+  })
+
+  const searchInput = document.getElementById("searchInput") as HTMLInputElement
+  const sortSelect = document.getElementById("sortSelect") as HTMLSelectElement
+  const archiveSelect = document.getElementById(
+    "archiveSelect"
+  ) as HTMLSelectElement
+  const demoOnlyCheckbox = document.getElementById(
+    "demoOnlyCheckbox"
+  ) as HTMLInputElement
+  const projectCount = document.getElementById(
+    "projectCount"
+  ) as HTMLSpanElement
+  const projectsContainer = document.getElementById(
+    "projectsContainer"
+  ) as HTMLDivElement
+
+  let currentProjects = [...projectsData]
+
+  function filterProjects(
+    searchTerm: string,
+    demoOnly: boolean,
+    archiveFilter: string
+  ) {
+    const term = searchTerm.toLowerCase()
+    return projectsData.filter((project) => {
+      const matchesSearch =
+        project.title.toLowerCase().includes(term) ||
+        project.description.toLowerCase().includes(term) ||
+        project.topics.some((topic) => topic.toLowerCase().includes(term)) ||
+        project.languages.some((lang) => lang.toLowerCase().includes(term))
+
+      const matchesDemo = !demoOnly || project.demoUrl !== null
+
+      let matchesArchive = true
+      if (archiveFilter === "hide") {
+        matchesArchive = !project.archived
+      } else if (archiveFilter === "only") {
+        matchesArchive = project.archived
+      }
+      // "show" means show all, so no filtering
+
+      return matchesSearch && matchesDemo && matchesArchive
+    })
+  }
+
+  function sortProjects(projects: Project[], sortBy: string) {
+    const sorted = [...projects]
+
+    switch (sortBy) {
+      case "updated-desc":
+        sorted.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+        break
+      case "updated-asc":
+        sorted.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime())
+        break
+      case "created-desc":
+        sorted.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+        break
+      case "created-asc":
+        sorted.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+        break
+    }
+
+    return sorted
+  }
+
+  function updateDisplay() {
+    const searchTerm = searchInput.value
+    const sortBy = sortSelect.value
+    const archiveFilter = archiveSelect.value
+    const demoOnly = demoOnlyCheckbox.checked
+
+    let filtered = filterProjects(searchTerm, demoOnly, archiveFilter)
+    currentProjects = sortProjects(filtered, sortBy)
+
+    // Update count
+    projectCount.textContent = currentProjects.length.toString()
+
+    // Hide all projects first
+    projectElements.forEach((el) => {
+      ;(el as HTMLElement).style.display = "none"
+    })
+
+    // Show and reorder filtered projects
+    currentProjects.forEach((project, index) => {
+      const element = document.getElementById(`project-${project.id}`)
+      if (element) {
+        element.style.display = "block"
+        element.style.order = index.toString()
+      }
+    })
+  }
+
+  // Set container to use flexbox for ordering
+  projectsContainer.style.display = "flex"
+  projectsContainer.style.flexDirection = "column"
+
+  // Event listeners
+  searchInput.addEventListener("input", updateDisplay)
+  sortSelect.addEventListener("change", updateDisplay)
+  archiveSelect.addEventListener("change", updateDisplay)
+  demoOnlyCheckbox.addEventListener("change", updateDisplay)
+
+  // Handle hash navigation
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash)
+    if (target) {
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "center" })
+      }, 50)
+    }
+  }
+
+  // Initialize with default sort (already sorted by updated desc from API)
+  updateDisplay()
+</script>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(150, 150, 150, 0.3);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  header h2 {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: normal;
+    margin-bottom: 1rem;
+  }
+
+  header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .logo img {
+    max-height: 140px;
+  }
+
+  .socials {
+    margin-top: 1rem;
+  }
+
+  .socials h4 {
+    margin-bottom: 0.5rem;
+  }
+
+  .brandiconheader {
+    display: flex;
+    gap: 1rem;
+    font-size: 2rem;
+  }
+
+  .brandiconheader a {
+    color: #333;
+    transition: color 0.2s;
+  }
+
+  .brandiconheader a:hover {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(245, 245, 245, 0.85);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(150, 150, 150, 0.3);
+    border-radius: 8px;
+  }
+
+  .search-filter {
+    flex: 1;
+    min-width: 250px;
+  }
+
+  .search-filter input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .search-filter input:focus {
+    outline: none;
+    border-color: #0066cc;
+  }
+
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sort-controls select {
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+  }
+
+  .archive-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .archive-filter select {
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+  }
+
+  .demo-filter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .demo-filter label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .demo-filter input[type="checkbox"] {
+    cursor: pointer;
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .stats {
+    font-weight: 500;
+    color: #666;
+  }
+
+  #projectsContainer {
+    min-height: 200px;
+  }
+
+  @media (max-width: 768px) {
+    .controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .sort-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .sort-controls select {
+      width: 100%;
+    }
+  }
+</style>

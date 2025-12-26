@@ -1,0 +1,13 @@
+/*
+.*
+
+!/public/
+!/src/
+
+!/.gitignore
+!/.prettierrc*
+!/astro.config.mjs
+!/bun.lock
+!/package.json
+!/README.md
+!/tsconfig.json

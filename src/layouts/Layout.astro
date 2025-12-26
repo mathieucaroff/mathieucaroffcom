@@ -1,0 +1,134 @@
+---
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="GitHub Projects Showcase by Mathieu Caroff"
+    />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <canvas class="fullbackground"></canvas>
+    <slot />
+  </body>
+</html>
+
+<script>
+  import {
+    createColorStrip,
+    type ColorStripConfig,
+  } from "@mathieucaroff/colorstrip"
+  import { resolveSearchAndHash } from "../lib/urlParameter"
+
+  interface MainConfig extends ColorStripConfig {
+    seed: number
+    hue: number | undefined
+  }
+
+  function getConfig() {
+    return resolveSearchAndHash<MainConfig>(location, {
+      diversityRatio: () => 0.25,
+      radiusFactor: () => 1,
+      secondaryRadiusFactor: ({ radiusFactor }) => radiusFactor(),
+      speedFactor: () => 0.2,
+      seed: () => Math.floor(Math.random() * 2 ** 32),
+      paletteSeed: ({ seed }) => seed(),
+      stripCircleSeed: ({ seed }) => seed(),
+      stripCount: () => 10,
+      theme: () => "pastelle",
+      hue: () => undefined,
+      baseHue: ({ hue }) => hue(),
+    })
+  }
+
+  const canvas = document.querySelector(".fullbackground") as HTMLCanvasElement
+
+  function resize() {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  }
+  window.addEventListener("resize", resize)
+  resize()
+
+  const config = getConfig()
+
+  let strip = createColorStrip(canvas, config)
+
+  strip.play()
+</script>
+
+<style is:global>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family:
+      "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+      Arial, sans-serif;
+    background: #ffffff;
+    color: #333;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .fullbackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+  }
+
+  a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+</style>
