@@ -117,12 +117,16 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     <h2>My GitHub Projects</h2>
     <section class="controls">
       <div class="search-filter">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search projects by title, description, topics, or languages..."
-          autocomplete="off"
-        />
+        <div class="search-input-wrapper">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search projects by title, description, topics, or languages..."
+            autocomplete="off"
+          />
+          <button id="clearSearch" class="clear-search" title="Clear search">
+          </button>
+        </div>
         <div class="keyword-chips">
           <button class="keyword-chip" data-keyword="featured">featured</button>
           <button class="keyword-chip" data-keyword="game">game</button>
@@ -368,11 +372,37 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   projectsContainer.style.display = "flex"
   projectsContainer.style.flexDirection = "column"
 
+  // Clear search button
+  const clearSearchBtn = document.getElementById(
+    "clearSearch"
+  ) as HTMLButtonElement
+
+  function updateClearButton() {
+    if (searchInput.value.length > 0) {
+      clearSearchBtn.classList.remove("hidden")
+    } else {
+      clearSearchBtn.classList.add("hidden")
+    }
+  }
+
+  clearSearchBtn.addEventListener("click", () => {
+    searchInput.value = ""
+    updateDisplay()
+    updateClearButton()
+    searchInput.focus()
+  })
+
   // Event listeners
-  searchInput.addEventListener("input", updateDisplay)
+  searchInput.addEventListener("input", () => {
+    updateDisplay()
+    updateClearButton()
+  })
   sortSelect.addEventListener("change", updateDisplay)
   archiveSelect.addEventListener("change", updateDisplay)
   demoOnlyCheckbox.addEventListener("change", updateDisplay)
+
+  // Initialize clear button state
+  updateClearButton()
 
   // Keyword chip click handlers
   const keywordChips = document.querySelectorAll(".keyword-chip")
@@ -396,6 +426,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 
       // Trigger search
       updateDisplay()
+      updateClearButton()
     })
   })
 
@@ -494,9 +525,16 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     min-width: 250px;
   }
 
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
   .search-filter input {
     width: 100%;
     padding: 0.75rem;
+    padding-right: 2.5rem;
     font-size: 1rem;
     font-family: inherit;
     border: 1px solid #ccc;
@@ -506,6 +544,39 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   .search-filter input:focus {
     outline: none;
     border-color: #0066cc;
+  }
+
+  .clear-search {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  .clear-search:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .clear-search.hidden {
+    display: none;
+  }
+
+  .clear-search::before {
+    content: "×";
+    display: block;
+    transform: translateY(-0.07em);
   }
 
   .keyword-chips {
