@@ -28,7 +28,7 @@ function addHash<T>(location: Location, infoObject: InfoObject<T>) {
         value = true
       }
 
-      infoObject[key] = () => value
+      infoObject[key as keyof T] = () => value
     })
 }
 
@@ -52,7 +52,7 @@ function addSearch<T>(location: Location, infoObject: InfoObject<T>) {
     } else if (!isNaN(value)) {
       value = +value
     }
-    infoObject[key] = () => value
+    infoObject[key as keyof T] = () => value
   })
 }
 

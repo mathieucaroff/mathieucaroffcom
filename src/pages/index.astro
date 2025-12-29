@@ -7,7 +7,7 @@ const githubToken = import.meta.env.GITHUB_TOKEN
 let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 ---
 
-<Layout title="Mathieu Caroff - GitHub Projects">
+<Layout title="Mathieu CAROFF's">
   <main>
     <header>
       <div class="logo">
@@ -39,6 +39,10 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
           </p>
         </div>
       </div>
+
+      <aside class="header-right">
+        <a href="/madelaine">La Madelaine</a>
+      </aside>
     </header>
 
     <section class="useful-links">
@@ -459,6 +463,9 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     border: 2px solid rgba(150, 150, 150, 0.3);
     border-radius: 8px;
     margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
   }
 
   header h1 {
@@ -473,10 +480,9 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     margin-bottom: 1rem;
   }
 
-  header {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+  .header-right {
+    margin-left: auto;
+    align-self: start;
   }
 
   .logo img {
