@@ -250,18 +250,57 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 
   let currentProjects = [...projectsData]
 
+  // Fuzzy match function - checks if pattern characters appear in order with limited gaps
+  function fuzzyMatch(pattern: string, text: string): boolean {
+    pattern = pattern.toLowerCase()
+    text = text.toLowerCase()
+
+    const maxGap = 4
+
+    // Try starting the match from each position in the text
+    for (let start = 0; start < text.length; start++) {
+      let patternIdx = 0
+      let lastMatchIdx = -1
+
+      for (let i = start; i < text.length && patternIdx < pattern.length; i++) {
+        if (pattern[patternIdx] === text[i]) {
+          // Check if gap from last match is within limit
+          if (lastMatchIdx !== -1 && i - lastMatchIdx - 1 > maxGap) {
+            break // This starting position doesn't work, try next
+          }
+          lastMatchIdx = i
+          patternIdx++
+        }
+      }
+
+      if (patternIdx === pattern.length) {
+        return true // Found a complete match
+      }
+    }
+
+    return false // No complete match found from any starting position
+  }
+
   function filterProjects(
     searchTerm: string,
     demoOnly: boolean,
     archiveFilter: string
   ) {
-    const term = searchTerm.toLowerCase()
+    const terms = searchTerm
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((t) => t.length > 0)
+
     return projectsData.filter((project) => {
-      const matchesSearch =
-        project.title.toLowerCase().includes(term) ||
-        project.description.toLowerCase().includes(term) ||
-        project.topics.some((topic) => topic.toLowerCase().includes(term)) ||
-        project.languages.some((lang) => lang.toLowerCase().includes(term))
+      // All search terms must match (with fuzzy matching)
+      const matchesSearch = terms.every((term) => {
+        return (
+          fuzzyMatch(term, project.title) ||
+          fuzzyMatch(term, project.description) ||
+          project.topics.some((topic) => fuzzyMatch(term, topic)) ||
+          project.languages.some((lang) => fuzzyMatch(term, lang))
+        )
+      })
 
       const matchesDemo = !demoOnly || project.demoUrl !== null
 
