@@ -41,6 +41,79 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
       </div>
     </header>
 
+    <section class="useful-links">
+      <h2>Useful Links</h2>
+      <ul class="externallinklist">
+        <!-- note: the <b></b> are there for the CSS `.externallinklist b:after { content: "\f08e"; }` to work -->
+        <li>
+          <a href="https://regex101.com/"
+            ><span>🔤</span>Regex test tool<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://dbfiddle.uk/"
+            ><span>🔤</span>SQL snippet testing and sharing<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://unicode-table.com/"
+            ><span>🔍</span>Unicode search tool<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://fontawesome.com/v4/icons/"
+            ><span><i class="fa fa-flag"></i></span>Font Awesome<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://react-icons.github.io/react-icons/icons"
+            ><span>"</span>React icons<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://detexify.kirelabs.org/"
+            ><span>∫</span>LaTeX symbol search tool<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://gchq.github.io/CyberChef"
+            ><span>🍲</span>CyberChef (sort, case change...)<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://omrelli.ug/nearley-playground/"
+            ><span>📕</span>Grammar tool<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://ifconfig.me/"><span>🌐</span>IP Address<b></b></a>
+        </li>
+        <!-- curl ifconfig.me; curl ipinfo.io -->
+        <li>
+          <a href="https://en.wikipedia.org/wiki/Country_code_top-level_domain"
+            ><span>.</span>Country TLDs<b></b></a
+          >
+        </li>
+        <li>
+          <a
+            href="https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains"
+            ><span>..</span>Other TLDs<b></b></a
+          >
+        </li>
+        <li>
+          <a href="https://excalidraw.com/"><span>✎</span>Excalidraw<b></b></a>
+        </li>
+        <li>
+          <a href="https://app.diagrams.net/"><span>🛆</span>Draw.io<b></b></a>
+        </li>
+        <li>
+          <a href="https://www.planttext.com/"
+            ><span>□□</span>PlantText<b></b></a
+          >
+        </li>
+      </ul>
+    </section>
+
     <h2>My GitHub Projects</h2>
     <section class="controls">
       <div class="search-filter">
@@ -440,5 +513,57 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     .sort-controls select {
       width: 100%;
     }
+  }
+
+  .useful-links {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(150, 150, 150, 0.3);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .useful-links h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .externallinklist {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, auto);
+  }
+
+  .externallinklist li {
+    margin: 0;
+  }
+
+  .externallinklist a {
+    display: flex;
+    align-items: center;
+    color: #0066cc;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+
+  .externallinklist a:hover {
+    background-color: rgba(0, 102, 204, 0.1);
+  }
+
+  .externallinklist span {
+    font-style: normal;
+    min-width: 1.5rem;
+    text-align: center;
+  }
+
+  .externallinklist b:after {
+    content: "\f08e";
+    font-family: FontAwesome;
+    margin-left: 0.3rem;
+    font-size: 0.85em;
+    opacity: 0.6;
   }
 </style>
