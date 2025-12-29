@@ -123,6 +123,12 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
           placeholder="Search projects by title, description, topics, or languages..."
           autocomplete="off"
         />
+        <div class="keyword-chips">
+          <button class="keyword-chip" data-keyword="featured">featured</button>
+          <button class="keyword-chip" data-keyword="game">game</button>
+          <button class="keyword-chip" data-keyword="tool">tool</button>
+          <button class="keyword-chip" data-keyword="keyboard">keyboard</button>
+        </div>
       </div>
 
       <div class="sort-controls">
@@ -329,6 +335,31 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   archiveSelect.addEventListener("change", updateDisplay)
   demoOnlyCheckbox.addEventListener("change", updateDisplay)
 
+  // Keyword chip click handlers
+  const keywordChips = document.querySelectorAll(".keyword-chip")
+  keywordChips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const keyword = (chip as HTMLElement).dataset.keyword || ""
+      const currentValue = searchInput.value
+
+      // Remove all keyword instances from search
+      const keywords = ["featured", "game", "tool", "keyboard"]
+      let newValue = currentValue
+      keywords.forEach((kw) => {
+        newValue = newValue.replace(new RegExp(`\\b${kw}\\b`, "gi"), "")
+      })
+
+      // Clean up extra spaces
+      newValue = newValue.replace(/\s+/g, " ").trim()
+
+      // Add the clicked keyword
+      searchInput.value = newValue ? `${newValue} ${keyword}` : keyword
+
+      // Trigger search
+      updateDisplay()
+    })
+  })
+
   // Handle hash navigation
   if (window.location.hash) {
     const target = document.querySelector(window.location.hash)
@@ -410,7 +441,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    align-items: center;
+    align-items: start;
     margin-bottom: 2rem;
     padding: 1rem;
     background: rgba(245, 245, 245, 0.85);
@@ -436,6 +467,53 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   .search-filter input:focus {
     outline: none;
     border-color: #0066cc;
+  }
+
+  .keyword-chips {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .keyword-chip {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .keyword-chip[data-keyword="featured"] {
+    background-color: #ffd700;
+    color: #333;
+  }
+
+  .keyword-chip[data-keyword="game"] {
+    background-color: #ff6b9d;
+    color: white;
+  }
+
+  .keyword-chip[data-keyword="tool"] {
+    background-color: #6c5ce7;
+    color: white;
+  }
+
+  .keyword-chip[data-keyword="keyboard"] {
+    background-color: #ff9f43;
+    color: white;
+  }
+
+  .keyword-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .keyword-chip:active {
+    transform: translateY(0);
   }
 
   .sort-controls {
