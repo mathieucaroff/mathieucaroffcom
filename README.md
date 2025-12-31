@@ -2,6 +2,8 @@
 
 A minimal showcase website for GitHub projects built with Astro.
 
+![mathieucaroffcom screenshot](./doc/mathieucaroffcom-screenshot.png)
+
 ## Features
 
 - **Build-time data fetching**: Pulls all public repositories from GitHub API during build
