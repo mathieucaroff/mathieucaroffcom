@@ -8,6 +8,11 @@
             "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
             Arial, sans-serif;
         line-height: unset;
+        overflow-x: hidden;
+    }
+
+    body {
+        overflow-x: hidden;
     }
 
     h1,

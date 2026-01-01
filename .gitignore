@@ -11,4 +11,5 @@
 !/bun.lock
 !/package.json
 !/README.md
+!/tailwind.config.mjs
 !/tsconfig.json

@@ -8,20 +8,26 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 ---
 
 <Layout title="Mathieu CAROFF's">
-  <main class="mx-auto max-w-[1200px]">
+  <main class="mx-auto w-full max-w-[1200px] min-w-0">
     <header
-      class="mb-8 flex items-center gap-4 rounded-lg border-2 border-[rgba(150,150,150,0.3)] bg-[rgba(255,255,255,0.85)] p-4 backdrop-blur-[15px]"
+      class="mb-8 flex min-w-0 flex-col items-start gap-4 rounded-lg border-2 border-[rgba(150,150,150,0.3)] bg-[rgba(255,255,255,0.85)] p-4 backdrop-blur-[15px] md:flex-row md:items-center"
     >
-      <div class="logo">
-        <a href="/"><img src="/redarrow420.png" class="max-h-[140px]" /></a>
+      <div class="logo shrink-0">
+        <a href="/"
+          ><img
+            src="/redarrow420.png"
+            class="max-h-[140px] h-auto max-w-full"
+        /></a>
       </div>
 
-      <div class="header-content">
-        <h1 class="mb-2 text-[2.5rem]">mathieucaroff.com</h1>
+      <div class="header-content w-full min-w-0 md:w-auto">
+        <h1 class="mb-2 break-words text-[2rem] md:text-[2.5rem]">
+          mathieucaroff.com
+        </h1>
 
         <div class="socials mt-4">
           <h4 class="mb-2 text-[1.1rem]">Socials</h4>
-          <p class="brandiconheader flex gap-4 text-[2rem]">
+          <p class="brandiconheader flex flex-wrap gap-4 text-[1.75rem] md:text-[2rem]">
             <a
               href="https://github.com/mathieucaroff"
               title="github"
@@ -56,7 +62,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         </div>
       </div>
 
-      <aside class="header-right ml-auto self-start">
+      <aside class="header-right self-start md:ml-auto">
         <a href="/madelaine">La Madelaine</a>
       </aside>
     </header>
@@ -66,7 +72,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     >
       <h2 class="mb-4 text-[1.5rem]">Useful Links</h2>
       <ul
-        class="externallinklist grid list-none grid-flow-col grid-rows-[repeat(3,auto)]"
+        class="externallinklist grid list-none grid-flow-col grid-rows-[repeat(90,auto)] sm:grid-rows-[repeat(7,auto)] md:grid-rows-[repeat(5,auto)] lg:grid-rows-[repeat(4,auto)] xl:grid-rows-[repeat(3,auto)]"
       >
         <!-- note: the <b></b> are there for the CSS `.externallinklist b:after { content: "\f08e"; }` to work -->
         <li>
@@ -521,15 +527,19 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 </script>
 
 <style>
-  .external-link {
+  .externallinklist a {
     display: flex;
     align-items: center;
     border-radius: 0.25rem;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s;  
   }
 
-  .external-link:hover {
+  .externallinklist a:hover {
     background-color: rgba(0, 102, 204, 0.1);
+  }
+
+  .externallinklist span {
+    width: 1.5rem;
   }
 
   .externallinklist b:after {
