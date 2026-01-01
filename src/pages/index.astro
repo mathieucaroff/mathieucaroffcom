@@ -8,140 +8,207 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 ---
 
 <Layout title="Mathieu CAROFF's">
-  <main>
-    <header>
+  <main class="mx-auto max-w-[1200px]">
+    <header
+      class="mb-8 flex items-center gap-4 rounded-lg border-2 border-[rgba(150,150,150,0.3)] bg-[rgba(255,255,255,0.85)] p-4 backdrop-blur-[15px]"
+    >
       <div class="logo">
-        <a href="/"><img src="/redarrow420.png" /></a>
+        <a href="/"><img src="/redarrow420.png" class="max-h-[140px]" /></a>
       </div>
 
       <div class="header-content">
-        <h1>mathieucaroff.com</h1>
+        <h1 class="mb-2 text-[2.5rem]">mathieucaroff.com</h1>
 
-        <div class="socials">
-          <h4>Socials</h4>
-          <p class="brandiconheader">
-            <a href="https://github.com/mathieucaroff" title="github"
+        <div class="socials mt-4">
+          <h4 class="mb-2 text-[1.1rem]">Socials</h4>
+          <p class="brandiconheader flex gap-4 text-[2rem]">
+            <a
+              href="https://github.com/mathieucaroff"
+              title="github"
+              class="text-neutral-800 transition-colors hover:text-[#0066cc] hover:no-underline"
               ><i class="fa fa-github"></i></a
             >
-            <a href="https://gitlab.com/caroff" title="gitlab"
+            <a
+              href="https://gitlab.com/caroff"
+              title="gitlab"
+              class="text-neutral-800 transition-colors hover:text-[#0066cc] hover:no-underline"
               ><i class="fa fa-gitlab"></i></a
             >
-            <a href="https://www.reddit.com/u/mathieucaroff/" title="reddit"
+            <a
+              href="https://www.reddit.com/u/mathieucaroff/"
+              title="reddit"
+              class="text-neutral-800 transition-colors hover:text-[#0066cc] hover:no-underline"
               ><i class="fa fa-reddit"></i></a
             >
             <a
               href="https://www.linkedin.com/in/mathieu-caroff/"
-              title="linkedin"><i class="fa fa-linkedin"></i></a
+              title="linkedin"
+              class="text-neutral-800 transition-colors hover:text-[#0066cc] hover:no-underline"
+              ><i class="fa fa-linkedin"></i></a
             >
-            <a href="https://stackoverflow.com/u/9878263" title="stackoverflow"
+            <a
+              href="https://stackoverflow.com/u/9878263"
+              title="stackoverflow"
+              class="text-neutral-800 transition-colors hover:text-[#0066cc] hover:no-underline"
               ><i class="fa fa-stack-overflow"></i></a
             >
           </p>
         </div>
       </div>
 
-      <aside class="header-right">
+      <aside class="header-right ml-auto self-start">
         <a href="/madelaine">La Madelaine</a>
       </aside>
     </header>
 
-    <section class="useful-links">
-      <h2>Useful Links</h2>
-      <ul class="externallinklist">
+    <section
+      class="useful-links mb-8 rounded-lg border-2 border-[rgba(150,150,150,0.3)] bg-[rgba(255,255,255,0.85)] p-4 backdrop-blur-[15px]"
+    >
+      <h2 class="mb-4 text-[1.5rem]">Useful Links</h2>
+      <ul
+        class="externallinklist grid list-none grid-flow-col grid-rows-[repeat(3,auto)]"
+      >
         <!-- note: the <b></b> are there for the CSS `.externallinklist b:after { content: "\f08e"; }` to work -->
         <li>
-          <a href="https://regex101.com/"
+          <a href="https://regex101.com/" class="external-link"
             ><span>🔤</span>Regex test tool<b></b></a
           >
         </li>
         <li>
-          <a href="https://dbfiddle.uk/"
+          <a href="https://dbfiddle.uk/" class="external-link"
             ><span>🔤</span>SQL snippet testing and sharing<b></b></a
           >
         </li>
         <li>
-          <a href="https://unicode-table.com/"
+          <a href="https://unicode-table.com/" class="external-link"
             ><span>🔍</span>Unicode search tool<b></b></a
           >
         </li>
         <li>
-          <a href="https://fontawesome.com/v4/icons/"
+          <a href="https://fontawesome.com/v4/icons/" class="external-link"
             ><span><i class="fa fa-flag"></i></span>Font Awesome<b></b></a
           >
         </li>
         <li>
-          <a href="https://react-icons.github.io/react-icons/icons"
-            ><span>"</span>React icons<b></b></a
+          <a
+            href="https://react-icons.github.io/react-icons/icons"
+            class="external-link"><span>"</span>React icons<b></b></a
           >
         </li>
         <li>
-          <a href="https://detexify.kirelabs.org/"
+          <a href="https://detexify.kirelabs.org/" class="external-link"
             ><span>∫</span>LaTeX symbol search tool<b></b></a
           >
         </li>
         <li>
-          <a href="https://gchq.github.io/CyberChef"
+          <a href="https://gchq.github.io/CyberChef" class="external-link"
             ><span>🍲</span>CyberChef (sort, case change...)<b></b></a
           >
         </li>
         <li>
-          <a href="https://omrelli.ug/nearley-playground/"
+          <a href="https://omrelli.ug/nearley-playground/" class="external-link"
             ><span>📕</span>Grammar tool<b></b></a
           >
         </li>
         <li>
-          <a href="https://ifconfig.me/"><span>🌐</span>IP Address<b></b></a>
+          <a href="https://ifconfig.me/" class="external-link"
+            ><span>🌐</span>IP Address<b></b></a
+          >
         </li>
         <!-- curl ifconfig.me; curl ipinfo.io -->
         <li>
-          <a href="https://en.wikipedia.org/wiki/Country_code_top-level_domain"
-            ><span>.</span>Country TLDs<b></b></a
+          <a
+            href="https://en.wikipedia.org/wiki/Country_code_top-level_domain"
+            class="external-link"><span>.</span>Country TLDs<b></b></a
           >
         </li>
         <li>
           <a
             href="https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains"
-            ><span>..</span>Other TLDs<b></b></a
+            class="external-link"><span>..</span>Other TLDs<b></b></a
           >
         </li>
         <li>
-          <a href="https://excalidraw.com/"><span>✎</span>Excalidraw<b></b></a>
+          <a href="https://excalidraw.com/" class="external-link"
+            ><span>✎</span>Excalidraw<b></b></a
+          >
         </li>
         <li>
-          <a href="https://app.diagrams.net/"><span>🛆</span>Draw.io<b></b></a>
+          <a href="https://app.diagrams.net/" class="external-link"
+            ><span>🛆</span>Draw.io<b></b></a
+          >
         </li>
         <li>
-          <a href="https://www.planttext.com/"
+          <a href="https://www.planttext.com/" class="external-link"
             ><span>□□</span>PlantText<b></b></a
           >
         </li>
       </ul>
     </section>
 
-    <h2>My GitHub Projects</h2>
-    <section class="controls">
-      <div class="search-filter">
-        <div class="search-input-wrapper">
+    <h2 class="mb-4 text-[1.5rem]">My GitHub Projects</h2>
+    <section
+      class="controls mb-8 flex flex-col items-start gap-4 rounded-lg border-2 border-[rgba(150,150,150,0.3)] bg-[rgba(245,245,245,0.85)] p-4 backdrop-blur-[15px] md:flex-row md:flex-wrap"
+    >
+      <div class="search-filter min-w-[250px] flex-1">
+        <div class="search-input-wrapper relative flex items-center">
           <input
             type="text"
             id="searchInput"
             placeholder="Search projects by title, description, topics, or languages..."
             autocomplete="off"
+            class="w-full rounded border border-[#ccc] bg-white p-3 pr-10 text-base focus:border-[#0066cc] focus:outline-none"
           />
-          <button id="clearSearch" class="clear-search" title="Clear search">
+          <button
+            id="clearSearch"
+            class="clear-search absolute right-2 flex hidden h-6 w-6 cursor-pointer items-center justify-center rounded-full border-0 bg-none p-0 text-[1.5rem] text-neutral-400 transition-all hover:bg-black/10 hover:text-neutral-800"
+            title="Clear search"
+            type="button"
+            aria-label="Clear search"
+          >
+            <span class="block translate-y-[-0.06em]">×</span>
           </button>
         </div>
-        <div class="keyword-chips">
-          <button class="keyword-chip" data-keyword="featured">featured</button>
-          <button class="keyword-chip" data-keyword="game">game</button>
-          <button class="keyword-chip" data-keyword="tool">tool</button>
-          <button class="keyword-chip" data-keyword="keyboard">keyboard</button>
+        <div class="keyword-chips mt-2 flex flex-wrap gap-2">
+          <button
+            class="keyword-chip cursor-pointer rounded-full border-0 px-3 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] active:translate-y-0 data-[keyword=featured]:bg-[#ffd700] data-[keyword=featured]:text-neutral-800 data-[keyword=game]:bg-[#ff6b9d] data-[keyword=game]:text-white data-[keyword=keyboard]:bg-[#ff9f43] data-[keyword=keyboard]:text-white data-[keyword=tool]:bg-[#6c5ce7] data-[keyword=tool]:text-white"
+            data-keyword="featured"
+            type="button"
+          >
+            featured
+          </button>
+          <button
+            class="keyword-chip cursor-pointer rounded-full border-0 px-3 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] active:translate-y-0 data-[keyword=featured]:bg-[#ffd700] data-[keyword=featured]:text-neutral-800 data-[keyword=game]:bg-[#ff6b9d] data-[keyword=game]:text-white data-[keyword=keyboard]:bg-[#ff9f43] data-[keyword=keyboard]:text-white data-[keyword=tool]:bg-[#6c5ce7] data-[keyword=tool]:text-white"
+            data-keyword="game"
+            type="button"
+          >
+            game
+          </button>
+          <button
+            class="keyword-chip cursor-pointer rounded-full border-0 px-3 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] active:translate-y-0 data-[keyword=featured]:bg-[#ffd700] data-[keyword=featured]:text-neutral-800 data-[keyword=game]:bg-[#ff6b9d] data-[keyword=game]:text-white data-[keyword=keyboard]:bg-[#ff9f43] data-[keyword=keyboard]:text-white data-[keyword=tool]:bg-[#6c5ce7] data-[keyword=tool]:text-white"
+            data-keyword="tool"
+            type="button"
+          >
+            tool
+          </button>
+          <button
+            class="keyword-chip cursor-pointer rounded-full border-0 px-3 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] active:translate-y-0 data-[keyword=featured]:bg-[#ffd700] data-[keyword=featured]:text-neutral-800 data-[keyword=game]:bg-[#ff6b9d] data-[keyword=game]:text-white data-[keyword=keyboard]:bg-[#ff9f43] data-[keyword=keyboard]:text-white data-[keyword=tool]:bg-[#6c5ce7] data-[keyword=tool]:text-white"
+            data-keyword="keyboard"
+            type="button"
+          >
+            keyboard
+          </button>
         </div>
       </div>
 
-      <div class="sort-controls">
+      <div
+        class="sort-controls flex flex-col gap-2 md:flex-row md:items-center"
+      >
         <label for="sortSelect">Sort by:</label>
-        <select id="sortSelect">
+        <select
+          id="sortSelect"
+          class="cursor-pointer rounded border border-[#ccc] bg-white p-3 text-base"
+        >
           <option value="updated-desc">Last Updated (Newest)</option>
           <option value="updated-asc">Last Updated (Oldest)</option>
           <option value="created-desc">Created (Newest)</option>
@@ -149,31 +216,40 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         </select>
       </div>
 
-      <div class="archive-filter">
+      <div
+        class="archive-filter flex flex-col gap-2 md:flex-row md:items-center"
+      >
         <label for="archiveSelect">Archived:</label>
-        <select id="archiveSelect">
+        <select
+          id="archiveSelect"
+          class="cursor-pointer rounded border border-[#ccc] bg-white p-3 text-base"
+        >
           <option value="hide">Hide archived</option>
           <option value="show">Show all</option>
           <option value="only">Only archived</option>
         </select>
       </div>
 
-      <div class="demo-filter">
-        <label>
-          <input type="checkbox" id="demoOnlyCheckbox" />
+      <div class="demo-filter flex w-full items-center">
+        <label class="flex cursor-pointer items-center gap-2 text-base">
+          <input
+            type="checkbox"
+            id="demoOnlyCheckbox"
+            class="h-5 w-5 cursor-pointer"
+          />
           Only projects with demo
         </label>
       </div>
 
-      <div class="stats">
+      <div class="stats font-medium text-neutral-500">
         <span id="projectCount">{projects.length}</span> projects
       </div>
     </section>
 
-    <div id="projectsContainer">
+    <div id="projectsContainer" class="flex min-h-[200px] flex-col">
       {
         projects.length === 0 ? (
-          <p style="padding: 2rem; text-align: center; color: #666;">
+          <p class="p-8 text-center text-neutral-500">
             No projects found. Check the console for errors.
           </p>
         ) : (
@@ -372,10 +448,6 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     })
   }
 
-  // Set container to use flexbox for ordering
-  projectsContainer.style.display = "flex"
-  projectsContainer.style.flexDirection = "column"
-
   // Clear search button
   const clearSearchBtn = document.getElementById(
     "clearSearch"
@@ -449,308 +521,15 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 </script>
 
 <style>
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(15px);
-    border: 2px solid rgba(150, 150, 150, 0.3);
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  header h2 {
-    font-size: 1.5rem;
-    color: #666;
-    font-weight: normal;
-    margin-bottom: 1rem;
-  }
-
-  .header-right {
-    margin-left: auto;
-    align-self: start;
-  }
-
-  .logo img {
-    max-height: 140px;
-  }
-
-  .socials {
-    margin-top: 1rem;
-  }
-
-  .socials h4 {
-    margin-bottom: 0.5rem;
-  }
-
-  .brandiconheader {
-    display: flex;
-    gap: 1rem;
-    font-size: 2rem;
-  }
-
-  .brandiconheader a {
-    color: #333;
-    transition: color 0.2s;
-  }
-
-  .brandiconheader a:hover {
-    color: #0066cc;
-    text-decoration: none;
-  }
-
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: start;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: rgba(245, 245, 245, 0.85);
-    backdrop-filter: blur(15px);
-    border: 2px solid rgba(150, 150, 150, 0.3);
-    border-radius: 8px;
-  }
-
-  .search-filter {
-    flex: 1;
-    min-width: 250px;
-  }
-
-  .search-input-wrapper {
-    position: relative;
+  .external-link {
     display: flex;
     align-items: center;
-  }
-
-  .search-filter input {
-    width: 100%;
-    padding: 0.75rem;
-    padding-right: 2.5rem;
-    font-size: 1rem;
-    font-family: inherit;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .search-filter input:focus {
-    outline: none;
-    border-color: #0066cc;
-  }
-
-  .clear-search {
-    position: absolute;
-    right: 0.5rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #999;
-    cursor: pointer;
-    padding: 0;
-    width: 1.5rem;
-    height: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s;
-  }
-
-  .clear-search:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: #333;
-  }
-
-  .clear-search.hidden {
-    display: none;
-  }
-
-  .clear-search::before {
-    content: "×";
-    display: block;
-    transform: translateY(-0.07em);
-  }
-
-  .keyword-chips {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .keyword-chip {
-    padding: 0.4rem 0.8rem;
-    border: none;
-    border-radius: 16px;
-    font-size: 0.9rem;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 500;
-  }
-
-  .keyword-chip[data-keyword="featured"] {
-    background-color: #ffd700;
-    color: #333;
-  }
-
-  .keyword-chip[data-keyword="game"] {
-    background-color: #ff6b9d;
-    color: white;
-  }
-
-  .keyword-chip[data-keyword="tool"] {
-    background-color: #6c5ce7;
-    color: white;
-  }
-
-  .keyword-chip[data-keyword="keyboard"] {
-    background-color: #ff9f43;
-    color: white;
-  }
-
-  .keyword-chip:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  }
-
-  .keyword-chip:active {
-    transform: translateY(0);
-  }
-
-  .sort-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .sort-controls select {
-    padding: 0.75rem;
-    font-size: 1rem;
-    font-family: inherit;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-  }
-
-  .archive-filter {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .archive-filter select {
-    padding: 0.75rem;
-    font-size: 1rem;
-    font-family: inherit;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-  }
-
-  .demo-filter {
-    width: 100%;
-    display: flex;
-    align-items: center;
-  }
-
-  .demo-filter label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .demo-filter input[type="checkbox"] {
-    cursor: pointer;
-    width: 1.2rem;
-    height: 1.2rem;
-  }
-
-  .stats {
-    font-weight: 500;
-    color: #666;
-  }
-
-  #projectsContainer {
-    min-height: 200px;
-  }
-
-  @media (max-width: 768px) {
-    .controls {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .sort-controls {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .sort-controls select {
-      width: 100%;
-    }
-  }
-
-  .useful-links {
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(15px);
-    border: 2px solid rgba(150, 150, 150, 0.3);
-    border-radius: 8px;
-    margin-bottom: 2rem;
-  }
-
-  .useful-links h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .externallinklist {
-    list-style: none;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(3, auto);
-  }
-
-  .externallinklist li {
-    margin: 0;
-  }
-
-  .externallinklist a {
-    display: flex;
-    align-items: center;
-    color: #0066cc;
-    text-decoration: none;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     transition: background-color 0.2s;
   }
 
-  .externallinklist a:hover {
+  .external-link:hover {
     background-color: rgba(0, 102, 204, 0.1);
-  }
-
-  .externallinklist span {
-    font-style: normal;
-    min-width: 1.5rem;
-    text-align: center;
   }
 
   .externallinklist b:after {
