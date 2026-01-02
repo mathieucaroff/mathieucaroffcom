@@ -240,10 +240,10 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         <label class="flex cursor-pointer items-center gap-2 text-base">
           <input
             type="checkbox"
-            id="demoOnlyCheckbox"
+            id="onlineOnlyCheckbox"
             class="h-5 w-5 cursor-pointer"
           />
-          Only projects with demo
+          Only projects which can be run or tested online
         </label>
       </div>
 
@@ -328,8 +328,8 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   const archiveSelect = document.getElementById(
     "archiveSelect"
   ) as HTMLSelectElement
-  const demoOnlyCheckbox = document.getElementById(
-    "demoOnlyCheckbox"
+  const onlineOnlyCheckbox = document.getElementById(
+    "onlineOnlyCheckbox"
   ) as HTMLInputElement
   const projectCount = document.getElementById(
     "projectCount"
@@ -373,7 +373,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 
   function filterProjects(
     searchTerm: string,
-    demoOnly: boolean,
+    onlineOnly: boolean,
     archiveFilter: string
   ) {
     const terms = searchTerm
@@ -392,7 +392,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         )
       })
 
-      const matchesDemo = !demoOnly || project.demoUrl !== null
+      const matchesDemo = !onlineOnly || project.demoUrl !== null
 
       let matchesArchive = true
       if (archiveFilter === "hide") {
@@ -431,9 +431,9 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     const searchTerm = searchInput.value
     const sortBy = sortSelect.value
     const archiveFilter = archiveSelect.value
-    const demoOnly = demoOnlyCheckbox.checked
+    const onlineOnly = onlineOnlyCheckbox.checked
 
-    let filtered = filterProjects(searchTerm, demoOnly, archiveFilter)
+    let filtered = filterProjects(searchTerm, onlineOnly, archiveFilter)
     currentProjects = sortProjects(filtered, sortBy)
 
     // Update count
@@ -481,7 +481,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   })
   sortSelect.addEventListener("change", updateDisplay)
   archiveSelect.addEventListener("change", updateDisplay)
-  demoOnlyCheckbox.addEventListener("change", updateDisplay)
+  onlineOnlyCheckbox.addEventListener("change", updateDisplay)
 
   // Initialize clear button state
   updateClearButton()
