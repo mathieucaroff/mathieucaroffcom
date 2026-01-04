@@ -286,7 +286,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     const demoLink = article.querySelector(
       'a[href]:not([href*="github.com"])'
     ) as HTMLAnchorElement
-    const demoUrl = demoLink?.href || null
+    const liveUrl = demoLink?.href || null
 
     const languagesDiv = article.querySelector(".languages")
     const languages = languagesDiv
@@ -313,7 +313,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
       title: cleanTitle,
       description,
       repoUrl,
-      demoUrl,
+      liveUrl,
       createdAt: new Date(createdText),
       updatedAt: new Date(updatedText),
       topics,
@@ -392,7 +392,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         )
       })
 
-      const matchesDemo = !onlineOnly || project.demoUrl !== null
+      const matchesDemo = !onlineOnly || project.liveUrl !== null
 
       let matchesArchive = true
       if (archiveFilter === "hide") {

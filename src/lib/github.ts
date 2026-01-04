@@ -23,7 +23,7 @@ export interface Project {
   title: string
   description: string
   repoUrl: string
-  demoUrl: string | null
+  liveUrl: string | null
   createdAt: Date
   updatedAt: Date
   topics: string[]
@@ -160,7 +160,7 @@ export async function fetchGitHubProjects(
         title: repo.name,
         description: repo.description || "",
         repoUrl: repo.html_url,
-        demoUrl: repo.homepage || null,
+        liveUrl: repo.homepage || null,
         createdAt: new Date(repo.created_at),
         updatedAt: new Date(repo.pushed_at || repo.updated_at),
         topics: repo.topics || [],

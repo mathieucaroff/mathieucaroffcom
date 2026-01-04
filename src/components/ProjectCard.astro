@@ -78,9 +78,9 @@ function formatDate(date: Date): string {
           <i class="fa fa-github"></i> Repository
         </a>
         {
-          project.demoUrl && (
+          project.liveUrl && (
             <a
-              href={project.demoUrl}
+              href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1 rounded bg-[#0066cc] px-4 py-2 font-medium text-white no-underline hover:bg-[#0052a3] hover:no-underline"
@@ -95,12 +95,14 @@ function formatDate(date: Date): string {
     {
       project.imageUrl && (
         <div class="project-image w-full shrink-0 md:w-[400px] md:max-w-[45%]">
-          <img
-            src={project.imageUrl}
-            alt={`${project.title} preview`}
-            loading="lazy"
-            class="h-auto max-h-[300px] w-full rounded-md border border-black/20 object-cover"
-          />
+          <a href={project.liveUrl}>
+            <img
+              src={project.imageUrl}
+              alt={`${project.title} preview`}
+              loading="lazy"
+              class="h-auto max-h-[300px] w-full rounded-md border border-black/20 object-cover"
+            />
+          </a>
         </div>
       )
     }
