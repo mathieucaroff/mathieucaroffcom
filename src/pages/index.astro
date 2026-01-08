@@ -16,18 +16,21 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         <a href="/"
           ><img
             src="/redarrow420.png"
-            class="max-h-[140px] h-auto max-w-full"
-        /></a>
+            class="h-auto max-h-[140px] max-w-full"
+          /></a
+        >
       </div>
 
       <div class="header-content w-full min-w-0 md:w-auto">
-        <h1 class="mb-2 break-words text-[2rem] md:text-[2.5rem]">
+        <h1 class="mb-2 text-[2rem] break-words md:text-[2.5rem]">
           mathieucaroff.com
         </h1>
 
         <div class="socials mt-4">
           <h4 class="mb-2 text-[1.1rem]">Socials</h4>
-          <p class="brandiconheader flex flex-wrap gap-4 text-[1.75rem] md:text-[2rem]">
+          <p
+            class="brandiconheader flex flex-wrap gap-4 text-[1.75rem] md:text-[2rem]"
+          >
             <a
               href="https://github.com/mathieucaroff"
               title="github"
@@ -286,7 +289,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     const demoLink = article.querySelector(
       'a[href]:not([href*="github.com"])'
     ) as HTMLAnchorElement
-    const liveUrl = demoLink?.href || null
+    const liveUrl = demoLink?.href || ""
 
     const languagesDiv = article.querySelector(".languages")
     const languages = languagesDiv
@@ -318,7 +321,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
       updatedAt: new Date(updatedText),
       topics,
       languages,
-      imageUrl: null,
+      imageUrl: "",
       archived: isArchived,
     })
   })
@@ -334,9 +337,6 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   const projectCount = document.getElementById(
     "projectCount"
   ) as HTMLSpanElement
-  const projectsContainer = document.getElementById(
-    "projectsContainer"
-  ) as HTMLDivElement
 
   let currentProjects = [...projectsData]
 
@@ -531,7 +531,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     display: flex;
     align-items: center;
     border-radius: 0.25rem;
-    transition: background-color 0.2s;  
+    transition: background-color 0.2s;
   }
 
   .externallinklist a:hover {
