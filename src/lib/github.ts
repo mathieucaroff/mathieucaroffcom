@@ -23,12 +23,12 @@ export interface Project {
   title: string
   description: string
   repoUrl: string
-  liveUrl: string | null
+  liveUrl: string
   createdAt: Date
   updatedAt: Date
   topics: string[]
   languages: string[]
-  imageUrl: string | null
+  imageUrl: string
   archived: boolean
 }
 
@@ -39,7 +39,7 @@ function extractFirstImageFromMarkdown(
   markdown: string,
   repoUrl: string,
   branch: string,
-): string | null {
+): string {
   // Find both markdown and HTML images with their positions
   const mdImageMatch = markdown.match(/!\[.*?\]\((.*?)\)/)
   const htmlImageMatch = markdown.match(/<img[^>]+src=["']([^"']+)["']/)
@@ -50,7 +50,7 @@ function extractFirstImageFromMarkdown(
     : Infinity
 
   // Determine which image comes first
-  let imageUrl: string | null = null
+  let imageUrl: string = ""
 
   if (mdPosition < htmlPosition && mdImageMatch) {
     imageUrl = mdImageMatch[1].trim()
@@ -59,7 +59,7 @@ function extractFirstImageFromMarkdown(
   }
 
   if (!imageUrl) {
-    return null
+    return ""
   }
 
   // Convert relative URLs to absolute
@@ -114,7 +114,13 @@ export async function fetchGitHubProjects(
 
   // Fetch languages for each repository
   const projects = await Promise.all(
-    filteredRepos.map(async (repo) => {
+    filteredRepos.map(async (repo): Promise<Project> => {
+      const liveUrl = repo.homepage?.match(
+        /^https?:[/][/](mathieucaroff.com|[^/]*\.(ea9c.com|vercel.app))/,
+      )
+        ? repo.homepage
+        : ""
+
       const languagesResponse = await fetch(repo.languages_url, {
         headers,
       })
@@ -134,7 +140,7 @@ export async function fetchGitHubProjects(
         .sort()
 
       // Fetch README to extract first image
-      let imageUrl: string | null = null
+      let imageUrl: string = ""
       try {
         const readmeResponse = await fetch(
           `${GITHUB_API}/repos/${username}/${repo.name}/readme`,
@@ -160,7 +166,7 @@ export async function fetchGitHubProjects(
         title: repo.name,
         description: repo.description || "",
         repoUrl: repo.html_url,
-        liveUrl: repo.homepage || null,
+        liveUrl,
         createdAt: new Date(repo.created_at),
         updatedAt: new Date(repo.pushed_at || repo.updated_at),
         topics: repo.topics || [],

@@ -16,18 +16,21 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         <a href="/"
           ><img
             src="/redarrow420.png"
-            class="max-h-[140px] h-auto max-w-full"
-        /></a>
+            class="h-auto max-h-[140px] max-w-full"
+          /></a
+        >
       </div>
 
       <div class="header-content w-full min-w-0 md:w-auto">
-        <h1 class="mb-2 break-words text-[2rem] md:text-[2.5rem]">
+        <h1 class="mb-2 text-[2rem] break-words md:text-[2.5rem]">
           mathieucaroff.com
         </h1>
 
         <div class="socials mt-4">
           <h4 class="mb-2 text-[1.1rem]">Socials</h4>
-          <p class="brandiconheader flex flex-wrap gap-4 text-[1.75rem] md:text-[2rem]">
+          <p
+            class="brandiconheader flex flex-wrap gap-4 text-[1.75rem] md:text-[2rem]"
+          >
             <a
               href="https://github.com/mathieucaroff"
               title="github"
@@ -256,7 +259,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
       {
         projects.length === 0 ? (
           <p class="p-8 text-center text-neutral-500">
-            No projects found. Check the console for errors.
+            No projects found. Check the filters.
           </p>
         ) : (
           projects.map((project) => <ProjectCard project={project} />)
@@ -284,21 +287,21 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
       (article.querySelector('a[href*="github.com"]') as HTMLAnchorElement)
         ?.href || ""
     const demoLink = article.querySelector(
-      'a[href]:not([href*="github.com"])'
+      "a[href]:not([href*='//github.com'])",
     ) as HTMLAnchorElement
-    const liveUrl = demoLink?.href || null
+    const liveUrl = demoLink?.href || ""
 
     const languagesDiv = article.querySelector(".languages")
     const languages = languagesDiv
       ? Array.from(languagesDiv.querySelectorAll(".language")).map(
-          (el) => el.textContent?.trim().replace(",", "") || ""
+          (el) => el.textContent?.trim().replace(",", "") || "",
         )
       : []
 
     const topicsDiv = article.querySelector(".topics")
     const topics = topicsDiv
       ? Array.from(topicsDiv.querySelectorAll(".topic")).map(
-          (el) => el.textContent?.trim() || ""
+          (el) => el.textContent?.trim() || "",
         )
       : []
 
@@ -318,7 +321,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
       updatedAt: new Date(updatedText),
       topics,
       languages,
-      imageUrl: null,
+      imageUrl: "",
       archived: isArchived,
     })
   })
@@ -326,17 +329,14 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   const searchInput = document.getElementById("searchInput") as HTMLInputElement
   const sortSelect = document.getElementById("sortSelect") as HTMLSelectElement
   const archiveSelect = document.getElementById(
-    "archiveSelect"
+    "archiveSelect",
   ) as HTMLSelectElement
   const onlineOnlyCheckbox = document.getElementById(
-    "onlineOnlyCheckbox"
+    "onlineOnlyCheckbox",
   ) as HTMLInputElement
   const projectCount = document.getElementById(
-    "projectCount"
+    "projectCount",
   ) as HTMLSpanElement
-  const projectsContainer = document.getElementById(
-    "projectsContainer"
-  ) as HTMLDivElement
 
   let currentProjects = [...projectsData]
 
@@ -374,7 +374,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
   function filterProjects(
     searchTerm: string,
     onlineOnly: boolean,
-    archiveFilter: string
+    archiveFilter: string,
   ) {
     const terms = searchTerm
       .toLowerCase()
@@ -392,7 +392,10 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         )
       })
 
-      const matchesDemo = !onlineOnly || project.liveUrl !== null
+      let matchesDemo = true
+      if (onlineOnly) {
+        matchesDemo = Boolean(project.liveUrl)
+      }
 
       let matchesArchive = true
       if (archiveFilter === "hide") {
@@ -456,7 +459,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 
   // Clear search button
   const clearSearchBtn = document.getElementById(
-    "clearSearch"
+    "clearSearch",
   ) as HTMLButtonElement
 
   function updateClearButton() {
@@ -531,7 +534,7 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
     display: flex;
     align-items: center;
     border-radius: 0.25rem;
-    transition: background-color 0.2s;  
+    transition: background-color 0.2s;
   }
 
   .externallinklist a:hover {
