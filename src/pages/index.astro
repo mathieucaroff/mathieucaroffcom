@@ -266,65 +266,21 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
         )
       }
     </div>
+    <div id="projects-data" style="display: none;">
+      {JSON.stringify(projects)}
+    </div>
   </main>
 </Layout>
 
 <script>
   import type { Project } from "../lib/github"
 
-  // Get all projects data from the DOM
-  const projectsData: Project[] = []
+  // Parse the projects data from the hidden element
+  const projectsData: Project[] = JSON.parse(
+    (document.getElementById("projects-data") as HTMLElement).textContent ||
+      "[]",
+  )
   const projectElements = document.querySelectorAll(".project")
-
-  projectElements.forEach((el) => {
-    const article = el as HTMLElement
-    const id = parseInt(article.id.replace("project-", ""))
-    const title = article.querySelector("h3")?.textContent || ""
-    const isArchived = title.includes("Archived")
-    const cleanTitle = title.replace("Archived", "").trim()
-    const description = article.querySelector(".description")?.textContent || ""
-    const repoUrl =
-      (article.querySelector('a[href*="github.com"]') as HTMLAnchorElement)
-        ?.href || ""
-    const demoLink = article.querySelector(
-      "a[href]:not([href*='//github.com'])",
-    ) as HTMLAnchorElement
-    const liveUrl = demoLink?.href || ""
-
-    const languagesDiv = article.querySelector(".languages")
-    const languages = languagesDiv
-      ? Array.from(languagesDiv.querySelectorAll(".language")).map(
-          (el) => el.textContent?.trim().replace(",", "") || "",
-        )
-      : []
-
-    const topicsDiv = article.querySelector(".topics")
-    const topics = topicsDiv
-      ? Array.from(topicsDiv.querySelectorAll(".topic")).map(
-          (el) => el.textContent?.trim() || "",
-        )
-      : []
-
-    const dates = article.querySelectorAll(".dates span")
-    const createdText =
-      dates[0]?.textContent?.replace("Created:", "").trim() || ""
-    const updatedText =
-      dates[1]?.textContent?.replace("Updated:", "").trim() || ""
-
-    projectsData.push({
-      id,
-      title: cleanTitle,
-      description,
-      repoUrl,
-      liveUrl,
-      createdAt: new Date(createdText),
-      updatedAt: new Date(updatedText),
-      topics,
-      languages,
-      imageUrl: "",
-      archived: isArchived,
-    })
-  })
 
   const searchInput = document.getElementById("searchInput") as HTMLInputElement
   const sortSelect = document.getElementById("sortSelect") as HTMLSelectElement
@@ -411,23 +367,10 @@ let projects = await fetchGitHubProjects("mathieucaroff", githubToken)
 
   function sortProjects(projects: Project[], sortBy: string) {
     const sorted = [...projects]
-
-    switch (sortBy) {
-      case "updated-desc":
-        sorted.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
-        break
-      case "updated-asc":
-        sorted.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime())
-        break
-      case "created-desc":
-        sorted.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-        break
-      case "created-asc":
-        sorted.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
-        break
-    }
-
-    return sorted
+    const key = sortBy.startsWith("updated") ? "updatedAt" : "createdAt"
+    const getTime = (obj: any) => new Date(obj[key]).getTime()
+    sorted.sort((a, b) => getTime(a) - getTime(b))
+    return sortBy.endsWith("-desc") ? sorted.reverse() : sorted
   }
 
   function updateDisplay() {
