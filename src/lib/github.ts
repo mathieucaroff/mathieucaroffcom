@@ -1,5 +1,8 @@
 export interface GitHubRepo {
   id: number
+  owner: {
+    login: string
+  }
   name: string
   description: string | null
   html_url: string
@@ -34,6 +37,11 @@ export interface Project {
 
 const GITHUB_API = "https://api.github.com"
 const EXCLUDE_KEYWORD_LIST = ["UNLISTED", "EMPTY"]
+const EXTRA_REPOSITORIES = [
+  { owner: "mathieucaroff", name: "lidy" },
+  { owner: "mathieucaroff", name: "ponyTranslator" },
+  { owner: "ditrit", name: "specimen" },
+]
 
 function extractFirstImageFromMarkdown(
   markdown: string,
@@ -102,8 +110,47 @@ export async function fetchGitHubProjects(
 
   const repos: GitHubRepo[] = await reposResponse.json()
 
+  const extraRepos = await Promise.all(
+    EXTRA_REPOSITORIES.map(async ({ owner, name }) => {
+      const { Authorization: _, ...tokenlessHeaders } = headers
+      const extraRepoResponse = await fetch(
+        `${GITHUB_API}/repos/${owner}/${name}`,
+        {
+          headers: tokenlessHeaders,
+        },
+      )
+
+      if (!extraRepoResponse.ok) {
+        console.log(`${GITHUB_API}/repos/${owner}/${name}`)
+        console.log(headers)
+
+        const repo = `${owner}/${name}`
+        const code = extraRepoResponse.status
+        const text = extraRepoResponse.statusText
+        throw new Error(`Failed to fetch repository ${repo}: ${code} ${text}`)
+      }
+
+      return (await extraRepoResponse.json()) as GitHubRepo
+    }),
+  )
+
+  const reposByFullName = new Map<string, GitHubRepo>()
+  for (const repo of [...repos, ...extraRepos]) {
+    reposByFullName.set(`${repo.owner.login}/${repo.name}`.toLowerCase(), repo)
+  }
+
+  const mergedRepos = [...reposByFullName.values()]
+
   // Filter out forked repositories
-  const nonForkedRepos = repos.filter((repo) => !repo.fork)
+  const nonForkedRepos = mergedRepos.filter((repo) => {
+    const isExplicitlyIncluded = EXTRA_REPOSITORIES.some(
+      ({ owner, name }) =>
+        repo.owner.login.toLowerCase() === owner.toLowerCase() &&
+        repo.name.toLowerCase() === name.toLowerCase(),
+    )
+
+    return !repo.fork || isExplicitlyIncluded
+  })
 
   // Filter out repositories containing excluded keywords
   const filteredRepos = nonForkedRepos.filter((repo) => {
@@ -143,7 +190,7 @@ export async function fetchGitHubProjects(
       let imageUrl: string = ""
       try {
         const readmeResponse = await fetch(
-          `${GITHUB_API}/repos/${username}/${repo.name}/readme`,
+          `${GITHUB_API}/repos/${repo.owner.login}/${repo.name}/readme`,
           { headers },
         )
         if (readmeResponse.ok) {
