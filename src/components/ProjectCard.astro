@@ -6,6 +6,8 @@ interface Props {
 }
 
 const { project } = Astro.props
+const PreviewWrapper = project.liveUrl ? "a" : "div"
+const previewWrapperProps = project.liveUrl ? { href: project.liveUrl } : {}
 
 function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("en-US", {
@@ -95,14 +97,14 @@ function formatDate(date: Date): string {
     {
       project.imageUrl && (
         <div class="project-image w-full shrink-0 md:w-[400px] md:max-w-[45%]">
-          <a href={project.liveUrl}>
+          <PreviewWrapper {...previewWrapperProps}>
             <img
               src={project.imageUrl}
               alt={`${project.title} preview`}
               loading="lazy"
               class="h-auto max-h-[300px] w-full rounded-md border border-black/20 object-cover"
             />
-          </a>
+          </PreviewWrapper>
         </div>
       )
     }
